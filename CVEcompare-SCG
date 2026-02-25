@@ -1,0 +1,22 @@
+#!/bin/sh
+# check cusotomer CVE list (formated as a .out single line for each CVE) against resolved list and outputs the CVE that are resolved into output.txt
+
+echo please enter cusotmer CVE text file:
+read infile
+echo filename of your results?:
+read outfile
+
+#debug
+printf $infile
+#this output.txt is the resolved CVE's
+grep -f SCGresolvedv2.txt $infile > output.out
+
+#create the resolved report
+cat $infile > SRre.out
+
+#take all the CVE's in output.out and mark as resolved in report. update 2024, strange format ouput
+while read LINE
+	do sed -i "s/$LINE/$LINE\ Resolved/g" SRre.out
+done < output.out
+
+cp SRre.out $outfile
